@@ -16,7 +16,7 @@ def choose(phenny, input):
     if len(c) == 1:
         c = re.findall(r'(\S+)', input)
         if len(c) == 1:
-            return phenny.reply("%s" % (c))
+            return phenny.reply("%s" % (c.strip()))
     fate = random.choice(c).strip()
     return phenny.reply("%s" % (fate))
 choose.rule = (['choose'], r'(.*)')
