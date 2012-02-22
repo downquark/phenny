@@ -11,7 +11,6 @@ def choose(phenny, input):
     origterm = input.groups()[1]
     if not origterm:
         return phenny.say(".choose <red> <blue> - for when you just can't decide")
-    origterm = origterm
     c = re.findall(r'([^,]+)', origterm)
     if len(c) == 1:
         c = re.findall(r'(\S+)', origterm)
