@@ -47,6 +47,11 @@ class Bot(asynchat.async_chat):
         import threading
         self.sending = threading.RLock()
 
+    def initiate_send(self):
+        self.sending.acquire()
+        asynchat.async_chat.initiate_send(self)
+        self.sending.release()
+
     # def push(self, *args, **kargs): 
     #     asynchat.async_chat.push(self, *args, **kargs)
 
@@ -79,7 +84,9 @@ class Bot(asynchat.async_chat):
             raise
             #pass
 
-    def run(self, host, port=6667, ssl=False, ipv6=False): 
+    def run(self, host, port=6667, ssl=False,
+            ipv6=False, ca_certs='/etc/ssl/certs/ca-certificates.crt'): 
+        self.ca_certs = ca_certs
         self.initiate_connect(host, port, ssl, ipv6)
 
     def initiate_connect(self, host, port, use_ssl, ipv6): 
@@ -100,7 +107,8 @@ class Bot(asynchat.async_chat):
         self.family_and_type = family, type
         sock = socket.socket(family, type)
         if use_ssl:
-            sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1)
+            sock = ssl.wrap_socket(sock, ssl_version=ssl.PROTOCOL_TLSv1,
+                    cert_reqs=ssl.CERT_OPTIONAL, ca_certs=self.ca_certs)
         # FIXME: ssl module does not appear to work properly with nonblocking sockets
         #sock.setblocking(0)
         self.set_socket(sock)
@@ -192,12 +200,11 @@ class Bot(asynchat.async_chat):
         self.sending.release()
 
     def action(self, recipient, text):
-        text = "ACTION %s" % text
-        textu = chr(1) + text + chr(1)
-        return self.msg(recipient, textu)
+        text = "\x01ACTION {0}\x01".format(text)
+        return self.msg(recipient, text)
 
     def notice(self, dest, text): 
-        self.write((b'NOTICE', dest), text)
+        self.write(('NOTICE', dest), text)
 
     def error(self, origin): 
         try: 
