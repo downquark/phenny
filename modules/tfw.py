@@ -16,13 +16,12 @@ def tfw(phenny, input, fahrenheit=False, celsius=False):
     """.tfw <city/zip> - Show the fucking weather at the specified location."""
 
     where = input.group(2)
-    if not where:
-        # default to Blacksburg, VA
-        where = "24060"
-
     url = "http://thefuckingweather.com/?where=" + urlquote(where)
+    if not where:
+        url = "http://thefuckingweather.com/?random=True"
+
     if not fahrenheit:
-        url += "&CELSIUS=yes"
+        url += "&unit=c"
 
     try:
         req = web.get(url)
