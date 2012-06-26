@@ -1,5 +1,8 @@
 ```bash
-sudo apt-get -y install python3 python3-minimal python3-mock python3-nose python3-pkg-resources python3-tk python3.2 python3.2-minimal libpython3.2 python3-dev python3-lxml python3.2-dev python-virtualenv libxml2-dev libxslt1-dev idle-python3.2 idle3 git-core
+sudo apt-get -y install python3 python3-minimal python3-mock python3-nose \
+python3-pkg-resources python3-tk python3.2 python3.2-minimal libpython3.2 \
+python3-dev python3-lxml python3.2-dev python-virtualenv libxml2-dev \
+libxslt1-dev idle-python3.2 idle3 git-core
 easy_install pip nose lxml
 pip install virtualenv virtualenvwrapper feedparser mock cython
 ```
