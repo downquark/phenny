@@ -27,7 +27,7 @@ subs = [
     ('mbps', '(megabits / second)')
 ]
 
-def c(phenny, input): 
+def calc(phenny, input): 
     """Google calculator."""
     if not input.group(2):
         return phenny.reply("Nothing to calculate.")
@@ -49,8 +49,8 @@ def c(phenny, input):
         answer = web.decode(answer)
         phenny.say(answer)
     else: phenny.reply('Sorry, no result.')
-c.commands = ['c']
-c.example = '.c 5 + 3'
+calc.commands = ['calc']
+calc.example = '.calc 5 + 3'
 
 def py(phenny, input): 
     query = input.group(2) or ""
